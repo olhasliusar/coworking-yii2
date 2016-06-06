@@ -29,23 +29,45 @@ $this->params['breadcrumbs'][] = $this->title;
         'model' => $model,
         'attributes' => [
             'id',
-            'user_id',
-//            'image_id',
+//            'user_id',
+            [
+                'attribute' => 'user',
+                'format' => 'html',
+                'value' => $model->user->username
+            ],
+            [
+                'attribute' => 'image',
+                'format' => 'html',
+                'value' =>  Html::img($model->image->urlPath, ['width' => '100px'])
+            ],
             'title',
             'text',
             'begin',
             'end',
             'cost',
             'status',
-            'updated_by',
+//            'updated_by',
+//            'updated_at',
+//            'created_at',
+//            'created_by',
+
+            [
+                'attribute' => 'updated_by',
+                'format' => 'html',
+                'value' => $model->userUpdate->username
+            ],
             'updated_at',
+            [
+                'attribute' => 'created_by',
+                'format' => 'html',
+                'value' => $model->userCreate->username
+            ],
             'created_at',
-            'created_by',
         ],
     ]) ?>
 
-    <div class="post-edit__img">
-        <img src="<?= $model->image->urlPath ?>" alt="post-img">
-    </div>
+<!--    <div class="post-edit__img">-->
+<!--        <img src="--><?//= $model->image->urlPath ?><!--" alt="post-img">-->
+<!--    </div>-->
 
 </div>

@@ -25,9 +25,9 @@ class PostController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['index', 'view'],
+                        'actions' => ['index'],
                         'allow' => true,
-                        'roles' => ['@'],// @ - для залогиненых пользователей, ? - для всех
+                        'roles' => ['user'],// @ - для залогиненых пользователей, ? - для всех
                     ],
                 ],
             ],

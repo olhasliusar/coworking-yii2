@@ -26,11 +26,17 @@ class PostController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'only' => ['index', 'view', 'create','update', 'delete', 'upload'],
                 'rules' => [
                     [
-                        'actions' => ['index', 'view', 'create','update', 'delete', 'upload'],
+                        'actions' => ['index', 'view', 'create','update', 'upload'],
                         'allow' => true,
-                        'roles' => ['@'],// @ - для залогиненых пользователей, ? - для всех
+                        'roles' => ['moder'],
+                    ],
+                    [
+                        'actions' => ['delete'],
+                        'allow' => true,
+                        'roles' => ['admin'],
                     ],
                 ],
             ],
@@ -74,7 +80,6 @@ class PostController extends Controller
         $model->end = date('Y-m-d H:i:s', $model->end);
         $model->created_at = date('Y-m-d H:i:s', $model->created_at);
         $model->updated_at = date('Y-m-d H:i:s', $model->updated_at);
-        var_dump($model->end);
         return $this->render('view', [
             'model' => $model,
         ]);

@@ -28,7 +28,7 @@ class ImageController extends Controller
                     [
                         'actions' => ['index', 'view', 'create','update', 'delete', 'upload'],
                         'allow' => true,
-                        'roles' => ['@'],// @ - для залогиненых пользователей, ? - для всех
+                        'roles' => ['moder'],// @ - для залогиненых пользователей, ? - для всех
                     ],
                 ],
             ],

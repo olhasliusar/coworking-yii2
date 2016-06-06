@@ -65,7 +65,7 @@ class Post extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'user_id' => 'User ID',
-            'image_id' => 'Image ID',
+            'image_id' => 'Image',
             'title' => 'Title',
             'text' => 'Text',
             'begin' => 'Begin',
@@ -81,6 +81,20 @@ class Post extends \yii\db\ActiveRecord
 
     public function getImage(){
         return Image::findOne($this->image_id);
+    }
+
+    public function getUser(){
+        return User::findOne($this->user_id);
+    }
+
+
+    public function getUserCreate(){
+        return User::findOne($this->created_by);
+    }
+
+
+    public function getUserUpdate(){
+        return User::findOne($this->updated_by);
     }
 
 

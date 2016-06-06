@@ -21,14 +21,34 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
+
+
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
-            'user_id',
-            'image_id',
+            [
+                'attribute' => 'user',
+                'format' => 'html',
+                'value' => function ($data) {
+                    return  $data->user->username;
+                }
+
+
+            ],
+
+            [
+                'attribute' => 'image_id',
+                'format' => 'html',
+                'value' => function ($data) {
+                    return Html::img($data->image->urlPath,
+                    ['width' => '100px']);
+                }
+            ],
+//          'user_id',
+
             'title',
             'text',
+
             // 'begin',
             // 'end',
             // 'cost',
@@ -40,5 +60,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
             ['class' => 'yii\grid\ActionColumn'],
         ],
+
     ]); ?>
 </div>
