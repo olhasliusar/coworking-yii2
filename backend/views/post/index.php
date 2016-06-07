@@ -27,13 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             [
-                'attribute' => 'user',
+                'attribute' => 'user_fullname',
                 'format' => 'html',
                 'value' => function ($data) {
-                    return  $data->user->username;
+                    return  $data->user->fullname;
                 }
-
-
             ],
 
             [
@@ -44,6 +42,15 @@ $this->params['breadcrumbs'][] = $this->title;
                     ['width' => '100px']);
                 }
             ],
+
+//            [
+//                'attribute' => 'status',
+//                'format' => 'html',
+//                'value' => function ($data) {
+//                    return $data->status == 1 ? 'active' : 'deleted';
+//                }
+//            ],
+
 //          'user_id',
 
             'title',
@@ -58,7 +65,13 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'created_at',
             // 'created_by',
 
-            ['class' => 'yii\grid\ActionColumn'],
+//            ['class' => 'yii\grid\ActionColumn'],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'header'=>'Actions',
+                'headerOptions' => ['width' => '60'],
+                'template' => '{view} {update} {delete}{link}',
+            ],
         ],
 
     ]); ?>

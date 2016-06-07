@@ -79,6 +79,13 @@ class Post extends \yii\db\ActiveRecord
         ];
     }
 
+    public function getStatus(){
+        return $this->status;
+    }
+    public function setStatus($newStatus){
+        return $this->status = $newStatus;
+    }
+
     public function getImage(){
         return Image::findOne($this->image_id);
     }

@@ -31,9 +31,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'id',
 //            'user_id',
             [
-                'attribute' => 'user',
+                'attribute' => 'user fullname',
                 'format' => 'html',
-                'value' => $model->user->username
+                'value' => $model->user->fullname
             ],
             [
                 'attribute' => 'image',

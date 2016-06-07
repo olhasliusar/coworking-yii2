@@ -50,6 +50,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             [['username'], 'unique'],
             [['email'], 'unique'],
 
+            [['role'], 'default', 'value' =>  1],
+
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
