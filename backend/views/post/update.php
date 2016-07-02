@@ -19,7 +19,9 @@ $this->params['breadcrumbs'][] = 'Update';
         'image' => $image,
     ]) ?>
 
-    <div class="post-edit__img">
-        <img src="<?= $model->image->urlPath ?>" alt="post-img">
-    </div>
+<!--        <img src="--><?//= $model->image->urlPath ?><!--" alt="post-img">-->
+
+<!--    <div class="post-edit__img">-->
+<!--        <img src="--><?//= $model->imageURL ?><!--" alt="post-img">-->
+<!--    </div>-->
 </div>

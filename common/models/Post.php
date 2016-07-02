@@ -86,14 +86,26 @@ class Post extends \yii\db\ActiveRecord
         return $this->status = $newStatus;
     }
 
-    public function getImage(){
-        return Image::findOne($this->image_id);
+//    public function getImage(){
+//        return Image::findOne($this->image_id);
+//    }
+
+    public function getImageURL(){
+        return  $this->image_id ?
+            Image::baseUrl() . Image::findOne($this->image_id)->path :
+            Image::baseUrl() . Image::IMAGE_DEFAULT;
     }
 
     public function getUser(){
-        return User::findOne($this->user_id);
+        return User::hasOne(User::className(), ['id' => 'user_id']);
+    }
+    public function getImage(){
+        return User::hasOne(Image::className(), ['id' => 'image_id']);
     }
 
+    public function getUserName(){
+    return $this->user->fullname;
+}
 
     public function getUserCreate(){
         return User::findOne($this->created_by);
@@ -103,7 +115,6 @@ class Post extends \yii\db\ActiveRecord
     public function getUserUpdate(){
         return User::findOne($this->updated_by);
     }
-
 
     public function behaviors()
     {

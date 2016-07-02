@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use common\models\User;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\PostSeach */
@@ -18,40 +19,50 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Create Post', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
+
+    <?php
+    $actionsWidget = '{view} {update}';
+    if (Yii::$app->user->can('deletePost')) {
+        $actionsWidget .= '{delete}';
+    }
+//    $columns = [];
+    ?>
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
 
-
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
+            'userName',
+
             [
-                'attribute' => 'user_fullname',
-                'format' => 'html',
+                'attribute'=>'status',
+                'visible' => Yii::$app->user->can('deletePost'),
+                'filter' => Html::activeDropDownList(
+                    $searchModel,
+                    'status',
+                    [
+                        User::STATUS_ACTIVE => 'active',
+                        User::STATUS_DELETED => 'inactive'
+                    ],
+                    ['class'=>'form-control']
+                ),
                 'value' => function ($data) {
-                    return  $data->user->fullname;
+                    return $data->status == 1 ? 'active' : 'inactive';
                 }
             ],
 
             [
-                'attribute' => 'image_id',
+                'attribute' => 'image',
                 'format' => 'html',
                 'value' => function ($data) {
-                    return Html::img($data->image->urlPath,
+//                    return Html::img($data->image->urlPath,
+                    return Html::img($data->imageURL,
                     ['width' => '100px']);
                 }
             ],
-
-//            [
-//                'attribute' => 'status',
-//                'format' => 'html',
-//                'value' => function ($data) {
-//                    return $data->status == 1 ? 'active' : 'deleted';
-//                }
-//            ],
-
-//          'user_id',
 
             'title',
             'text',
@@ -59,18 +70,12 @@ $this->params['breadcrumbs'][] = $this->title;
             // 'begin',
             // 'end',
             // 'cost',
-            // 'status',
-            // 'updated_by',
-            // 'updated_at',
-            // 'created_at',
-            // 'created_by',
 
-//            ['class' => 'yii\grid\ActionColumn'],
             [
                 'class' => 'yii\grid\ActionColumn',
-                'header'=>'Actions',
+                'header' => 'Actions',
                 'headerOptions' => ['width' => '60'],
-                'template' => '{view} {update} {delete}{link}',
+                'template' => $actionsWidget,
             ],
         ],
 

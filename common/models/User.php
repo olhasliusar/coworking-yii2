@@ -15,6 +15,7 @@ use yii\behaviors\BlameableBehavior;
  *
  * @property integer $id
  * @property string $username
+ * @property string $role
  * @property string $fullname
  * @property string $auth_key
  * @property string $password_hash
@@ -28,6 +29,13 @@ use yii\behaviors\BlameableBehavior;
  */
 class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
+
+    const STATUS_DELETED = 0;
+    const STATUS_ACTIVE = 1;
+
+    const ROLE_USER = 1;
+    const ROLE_MODER = 5;
+    const ROLE_ADMIN = 10;
     /**
      * @inheritdoc
      */
@@ -44,7 +52,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             [['status', 'updated_by', 'updated_at', 'created_at', 'created_by'], 'integer'],
 //            [['updated_by', 'updated_at', 'created_at', 'created_by'], 'required'],
-            [['username', 'fullname'], 'string', 'max' => 45],
+            [['username', 'role', 'fullname'], 'string', 'max' => 45],
             [['auth_key'], 'string', 'max' => 32],
             [['password_hash', 'password_reset_token', 'email'], 'string', 'max' => 255],
             [['username'], 'unique'],
@@ -70,6 +78,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return [
             'id' => 'ID',
             'username' => 'Username',
+            'role' => 'Role',
             'fullname' => 'Fullname',
             'auth_key' => 'Auth Key',
             'password_hash' => 'Password Hash',
@@ -83,13 +92,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         ];
     }
 
-
-    const STATUS_DELETED = 0;
-    const STATUS_ACTIVE = 1;
-
-    const ROLE_USER = 1;
-    const ROLE_MODER = 5;
-    const ROLE_ADMIN = 10;
 
 //
 //    /**
@@ -112,6 +114,20 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }   */
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoleName()
+    {
+        if($this->role == 1){
+            return 'user';
+        } elseif ($this->role == 5){
+            return 'moder';
+        } else {
+            return 'admin';
+        }
+    }
 
     /**
      * @inheritdoc

@@ -10,7 +10,7 @@ use common\models\User;
 /**
  * UserSeach represents the model behind the search form about `common\models\User`.
  */
-class UserSeach extends User
+class UserSearch extends User
 {
     /**
      * @inheritdoc
@@ -19,7 +19,7 @@ class UserSeach extends User
     {
         return [
             [['id', 'status', 'updated_by', 'updated_at', 'created_at', 'created_by'], 'integer'],
-            [['username', 'fullname', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
+            [['username', 'role', 'fullname', 'auth_key', 'password_hash', 'password_reset_token', 'email'], 'safe'],
         ];
     }
 
@@ -68,6 +68,7 @@ class UserSeach extends User
         ]);
 
         $query->andFilterWhere(['like', 'username', $this->username])
+            ->andFilterWhere(['like', 'role', $this->role])
             ->andFilterWhere(['like', 'fullname', $this->fullname])
             ->andFilterWhere(['like', 'auth_key', $this->auth_key])
             ->andFilterWhere(['like', 'password_hash', $this->password_hash])

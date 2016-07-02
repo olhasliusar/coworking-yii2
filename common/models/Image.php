@@ -22,6 +22,8 @@ use yii\behaviors\BlameableBehavior;
 class Image extends \yii\db\ActiveRecord
 {
 
+    const IMAGE_DEFAULT = 'static/web/default/default.jpeg';
+
     public  $imageFile;
     /**
      * @inheritdoc
@@ -97,7 +99,8 @@ class Image extends \yii\db\ActiveRecord
         ];
     }
 
-    public function getUrlPath(){
+
+    public function baseUrl(){
         $result = ''; // Пока результат пуст
         $default_port = 80; // Порт по-умолчанию
 
@@ -116,6 +119,10 @@ class Image extends \yii\db\ActiveRecord
         $result .= $_SERVER['SERVER_NAME'];
         $result .= "/";
 
-        return $result . $this->path;
+        return $result;
+    }
+
+    public function getUrlPath(){
+        return $this->baseUrl() . $this->path;
     }
 }

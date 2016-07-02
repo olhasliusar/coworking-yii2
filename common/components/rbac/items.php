@@ -24,6 +24,11 @@ return [
         'ruleName' => 'userRole',
         'children' => [
             'moder',
+            'deletePost',
         ],
+    ],
+    'deletePost' => [
+        'type' => 2,
+        'description' => 'Удаление поста',
     ],
 ];

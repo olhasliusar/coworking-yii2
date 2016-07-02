@@ -13,6 +13,7 @@ class RbacController extends Controller
         $dashboard = $auth->createPermission('dashboard');
         $dashboard->description = 'Админ панель';
         $auth->add($dashboard);
+
         //Включаем наш обработчик
         $rule = new UserRoleRule();
         $auth->add($rule);
@@ -28,10 +29,17 @@ class RbacController extends Controller
         //Добавляем потомков
         $auth->addChild($moder, $user);
         $auth->addChild($moder, $dashboard);
+
         $admin = $auth->createRole('admin');
         $admin->description = 'Администратор';
         $admin->ruleName = $rule->name;
         $auth->add($admin);
         $auth->addChild($admin, $moder);
+
+        //права для удаления поста
+        $deletePost = $auth->createPermission('deletePost');
+        $deletePost->description = 'Удаление поста';
+        $auth->add($deletePost);
+        $auth->addChild($admin, $deletePost);
     }
 }

@@ -32,20 +32,24 @@ $this->params['breadcrumbs'][] = $this->title;
 //            'user_id',
             [
                 'attribute' => 'user fullname',
-                'format' => 'html',
                 'value' => $model->user->fullname
             ],
             [
                 'attribute' => 'image',
                 'format' => 'html',
-                'value' =>  Html::img($model->image->urlPath, ['width' => '100px'])
+                'value' =>  Html::img($model->imageURL, ['width' => '100px'])
+//                'value' =>  Html::img($model->image->urlPath, ['width' => '100px'])
             ],
             'title',
             'text',
             'begin',
             'end',
             'cost',
-            'status',
+            [
+                'attribute' => 'status',
+                'visible' => Yii::$app->user->can('deletePost'),
+                'value' => $model->status == 1 ? 'active' : 'inactive'
+            ],
 //            'updated_by',
 //            'updated_at',
 //            'created_at',

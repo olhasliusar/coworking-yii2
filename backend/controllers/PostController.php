@@ -56,6 +56,11 @@ class PostController extends Controller
     public function actionIndex()
     {
         $searchModel = new PostSearch();
+
+        if (!Yii::$app->user->can('deletePost')) {
+            $searchModel->status = 1;
+        }
+
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -83,7 +88,6 @@ class PostController extends Controller
         return $this->render('view', [
             'model' => $model,
         ]);
-//            'model' => $this->findModel($id),
     }
 
     /**
@@ -130,9 +134,18 @@ class PostController extends Controller
         $model->beginTime = date('Y-m-d H:i:s', $model->begin);
         $model->endTime = date('Y-m-d H:i:s', $model->end);
 
+        $image = new Image();
+
         if ($model->load(Yii::$app->request->post())) {
             $model->begin = strtotime( $model->beginTime);
             $model->end = strtotime( $model->endTime);
+
+            $image->imageFile = UploadedFile::getInstance($image, 'imageFile');
+
+            if ($image->imageFile && $image->upload()) {
+                $model->image_id = $image->id;
+            }
+
             if($model->save()) {
                 return $this->redirect(['view', 'id' => $model->id]);
             }
@@ -140,7 +153,7 @@ class PostController extends Controller
 
         return $this->render('update', [
             'model' => $model,
-            'image' => $model->image
+            'image' => $image,
         ]);
     }
 
@@ -152,11 +165,12 @@ class PostController extends Controller
      */
     public function actionDelete($id)
     {
-        $this->findModel($id)->delete();
-        return $this->redirect(['index']);
+        $model = $this->findModel($id);
+        $model->setStatus(0);
+        $model->save();
 
-//        $this->setStatus(0);
-//        return $this->findModel($id)->status;
+//        $this->findModel($id)->delete();
+        return $this->redirect(['index']);
     }
 
     /**
@@ -189,4 +203,31 @@ class PostController extends Controller
 
         return $this->render('upload', ['model' => $model]);
     }
+
+    public function actionImageDel()
+    {
+        if( isset($_POST['id']) ){
+            $model = $this->findModel($_POST['id']);
+            $model->image_id = NULL;
+            $model->save(false);
+        }
+    }
+/*
+ * //renderajax
+ *
+    public function actionDeleteOrderImage()
+    {
+        if (isset($_POST['image_id'])) {
+            $orderId = UserImage::getById($_POST['image_id'])->order_id;
+            UserImage::deleteImage($_POST['image_id']);
+            $orderImagesData = new ArrayDataProvider([
+                'allModels' => UserImage::getAllByOrderId($orderId),
+            ]);
+
+            if (\Yii::$app->request->isAjax) {
+                return $this->renderAjax('_orderImages', ['orderImagesData' => $orderImagesData]);
+            }
+        }
+    }
+*/
 }
